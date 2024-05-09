@@ -32,7 +32,7 @@ CREATE TABLE [ORDERS_RELATIONAL_DB].[dbo].[Employees] (
     [PostalCode] VARCHAR(255),
     [Country] VARCHAR(255),
     [HomePhone] VARCHAR(255),
-    [Extension] INT,
+    [Extension] VARCHAR(255),
     [Notes] VARCHAR(255),
     [ReportsTo] INT,
     [PhotoPath] VARCHAR(255)
@@ -108,3 +108,5 @@ CREATE TABLE [ORDERS_RELATIONAL_DB].[dbo].[Territories] (
     [TerritoryDescription] VARCHAR(255),
     [RegionID] INT
 );
+
+SELECT * FROM [ORDERS_RELATIONAL_DB].[dbo].[Categories]

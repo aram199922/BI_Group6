@@ -45,36 +45,3 @@ def find_primary_key(cursor, table_name, schema):
     except:
         pass
     return results
-
-def connect_db_create_cursor(database_conf_name, config):
-    # Call to read the configuration file
-    db_conf = get_sql_config(config.sql_server_config, database_conf_name)
-    # Create a connection string for SQL Server
-    db_conn_str = 'Driver={};Server={};Database={};Trusted_Connection={};'.format(*db_conf)
-    # Connect to the server and to the desired database
-    db_conn = pyodbc.connect(db_conn_str)
-    # Create a Cursor class instance for executing T-SQL statements
-    db_cursor = db_conn.cursor()
-    return db_cursor
-
-
-def load_query(query_name, config):
-    for script in os.listdir(config.input_dir):
-        if query_name in script:
-            with open(config.input_dir + '\\' + script, 'r') as script_file:
-                sql_script = script_file.read()
-            break
-    return sql_script
-
-def insert_into_table(cursor, table_name, db, schema, source_data):
-    # Read the excel table
-    df = pd.read_excel(source_data, sheet_name = table_name, header=0)
-
-    insert_into_table_script = load_query('insert_into_{}'.format(table_name)).format(db=db, schema=schema)
-
-    # Populate a table in sql server
-    for index, row in df.iterrows():
-        cursor.execute(insert_into_table_script, row['BusinessEntityID'], row['FirstName'], row['LastName'])
-        cursor.commit()
-
-    print(f"{len(df)} rows have been inserted into the {db}.{schema}.{table_name} table")
